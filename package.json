@@ -23,5 +23,13 @@
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
     "semantic-release": "^19.0.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ]
   }
 }
