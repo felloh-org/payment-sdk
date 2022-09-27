@@ -103,7 +103,7 @@ class PaymentsSDK {
    */
   renderIframe(paymentID) {
     const iframe = document.createElement('iframe');
-    iframe.setAttribute('src', `${this.baseURL}embed/${paymentID}`);
+    iframe.setAttribute('src', `${this.baseURL}${paymentID}`);
     iframe.style.width = '100%';
     iframe.style.height = '900px';
     iframe.id = this.iframeID;
