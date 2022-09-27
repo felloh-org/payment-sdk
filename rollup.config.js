@@ -18,7 +18,7 @@ export default [
   {
     input: 'src/index.js',
     output: [
-      { file: pkg.main, format: 'iife' },
+      { file: pkg.main, format: 'iife', name: 'FellohPayments' },
       { file: pkg.module, format: 'es' },
     ],
     plugins: PLUGINS,

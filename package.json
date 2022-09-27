@@ -33,10 +33,9 @@
     "rollup": "^2.79.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-cleanup": "^3.2.1",
+    "rollup-plugin-iife": "^0.6.0",
     "rollup-plugin-typescript2": "^0.34.0",
-    "semantic-release": "^19.0.5",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
+    "semantic-release": "^19.0.5"
   },
   "publishConfig": {
     "access": "public"
