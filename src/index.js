@@ -2,7 +2,6 @@
  * PaymentSDK Class
  */
 class PaymentsSDK {
-
   /**
    * Payments SDK Constructor
    * @param containerName
