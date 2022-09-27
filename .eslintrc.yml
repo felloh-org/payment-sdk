@@ -1,0 +1,27 @@
+root: true
+
+plugins:
+  - 'sonarjs'
+  - 'unicorn'
+
+extends:
+  - "@felloh-org/eslint-config/mixins/base"
+
+parserOptions:
+  ecmaVersion: 11
+
+env:
+  browser: true
+  node: true
+
+ignorePatterns:
+  - dist
+  - tests
+  - node_modules
+  - vocerage
+
+rules:
+  no-shadow: "off"
+  camelcase: "off"
+  import/no-dynamic-require: "off"
+  global-require: "off"

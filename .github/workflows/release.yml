@@ -23,6 +23,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - run: yarn lint
+        env:
+          CI: true
+
       - run: yarn build
 
       - name: Publish via Semantic Release

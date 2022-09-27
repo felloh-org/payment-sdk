@@ -12,25 +12,25 @@ class PaymentsSDK {
     containerName = null,
     publicKey = null,
     options = {
-      sandbox: false
+      sandbox: false,
     },
   ) {
     // Set the public key
     if (publicKey === null) {
-      throw new Error('Felloh Payment SDK: Public key must be defined')
+      throw new Error('Felloh Payment SDK: Public key must be defined');
     }
 
     this.publicKey = publicKey;
 
     // Find the element and define it
     if (containerName === null) {
-      throw new Error('Felloh Payment SDK: Container name must be defined')
+      throw new Error('Felloh Payment SDK: Container name must be defined');
     }
 
     this.targetElement = document.getElementById(containerName);
 
-    if(this.targetElement === null) {
-      throw new Error('Felloh Payment SDK: Target element does not exist')
+    if (this.targetElement === null) {
+      throw new Error('Felloh Payment SDK: Target element does not exist');
     }
 
     // Set the base url for the pay frontend
@@ -45,19 +45,20 @@ class PaymentsSDK {
    * @returns {PaymentsSDK}
    */
   addIFrameSizeListener() {
-    const eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+    const eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
     const eventer = window[eventMethod];
-    const messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
+    const messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
 
     const classConstruct = this;
 
-    eventer(messageEvent,function(e) {
+    eventer(messageEvent, (e) => {
       try {
         const json = JSON.parse(e.data);
 
         if (typeof json.iframe_height !== 'undefined') {
-          document.getElementById(classConstruct.iframeID).style.height = json.iframe_height + 'px';
+          document.getElementById(classConstruct.iframeID).style.height = `${json.iframe_height}px`;
         }
+        // eslint-disable-next-line no-empty
       } catch (e) {}
     }, false);
 
@@ -70,10 +71,10 @@ class PaymentsSDK {
    * @returns {PaymentsSDK}
    */
   renderIframe(paymentID) {
-    const iframe = document.createElement("iframe");
-    iframe.setAttribute("src", `${this.baseURL}embed/${paymentID}`);
-    iframe.style.width = "100%";
-    iframe.style.height = "900px";
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('src', `${this.baseURL}embed/${paymentID}`);
+    iframe.style.width = '100%';
+    iframe.style.height = '900px';
     iframe.id = this.iframeID;
 
     this.targetElement.innerHTML = '';

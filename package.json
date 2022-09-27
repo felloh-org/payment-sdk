@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npx babel src --out-dir dist",
     "start": "npx babel src --watch --out-dir dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "./node_modules/.bin/eslint ./src"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,10 @@
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",
     "@babel/preset-env": "^7.1.6",
+    "@felloh-org/eslint-config": "^1.0.2",
+    "eslint": "^8.24.0",
+    "eslint-plugin-sonarjs": "^0.15.0",
+    "eslint-plugin-unicorn": "^43.0.2",
     "semantic-release": "^19.0.5"
   },
   "publishConfig": {
