@@ -35,11 +35,11 @@ const felloh = new SDK('payment-iframe', publicKey);
 We’ve placed a random API key in this example. Replace it with your actual publishable API keys to test this code through your Felloh account.
 
 For more information on how to use the Felloh SDK, please refer to the
-[Felloh API reference](hhttps://developers.felloh.com/) or learn to
+[Felloh API Documentation](https://developers.felloh.com) or learn to
 [Embed a payment](https://developers.felloh.com/embedded-payment-example) with
 Felloh.
 
 ## SDK Documentation
 
-- [Felloh API reference](hhttps://developers.felloh.com/)
-- [Embed a payment](https://developers.felloh.com/embedded-payment-example)
+- [Felloh API Documentation](https://developers.felloh.com)
+- [Embedding a payment](https://developers.felloh.com/embedded-payment-example)
