@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "build": "npx babel src --out-dir dist",
+    "build": "webpack --mode production",
     "start": "npx babel src --watch --out-dir dist",
     "lint": "./node_modules/.bin/eslint ./src"
   },
@@ -20,13 +20,16 @@
   "homepage": "https://github.com/felloh-org/payment-sdk#readme",
   "devDependencies": {
     "@babel/cli": "^7.1.5",
-    "@babel/core": "^7.1.6",
+    "@babel/core": "^7.19.1",
     "@babel/preset-env": "^7.1.6",
     "@felloh-org/eslint-config": "^1.0.2",
+    "babel-loader": "^8.2.5",
     "eslint": "^8.24.0",
     "eslint-plugin-sonarjs": "^0.15.0",
     "eslint-plugin-unicorn": "^43.0.2",
-    "semantic-release": "^19.0.5"
+    "semantic-release": "^19.0.5",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   },
   "publishConfig": {
     "access": "public"
