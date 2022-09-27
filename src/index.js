@@ -38,6 +38,17 @@ class PaymentsSDK {
 
     // Define a unique ID for the Iframe
     this.iframeID = `iframe-${new Date().getTime()}`;
+
+    // Define the current form status
+    this.status = 'preload';
+
+    // Define base events
+    this.events = {
+      onRender: () => {},
+      onSuccess: () => {},
+      onDecline: () => {},
+      onProcessing: () => {},
+    };
   }
 
   /**
@@ -54,6 +65,26 @@ class PaymentsSDK {
     eventer(messageEvent, (e) => {
       try {
         const json = JSON.parse(e.data);
+
+        if (typeof json.status !== 'undefined') {
+          if (json.stage === 'rendered' && this.status !== 'rendered') {
+            this.events.onRender();
+          }
+
+          if (json.status === 'success' && this.status !== 'success') {
+            this.events.onSuccess();
+          }
+
+          if (json.status === 'processing' && this.status !== 'processing') {
+            this.events.onProcessing();
+          }
+
+          if (json.status === 'declined' && this.status !== 'declined') {
+            this.events.onDecline();
+          }
+
+          this.status = json.status;
+        }
 
         if (typeof json.iframe_height !== 'undefined') {
           document.getElementById(classConstruct.iframeID).style.height = `${json.iframe_height}px`;
@@ -83,6 +114,46 @@ class PaymentsSDK {
     this.addIFrameSizeListener();
 
     return this;
+  }
+
+  /**
+   * On Render event trigger
+   * @param eventFunction
+   */
+  onRender(eventFunction) {
+    this.events.onRender = eventFunction;
+  }
+
+  /**
+   * On Success event trigger
+   * @param eventFunction
+   */
+  onSuccess(eventFunction) {
+    this.events.onRender = eventFunction;
+  }
+
+  /**
+   * On Decline event trigger
+   * @param eventFunction
+   */
+  onDecline(eventFunction) {
+    this.events.onRender = eventFunction;
+  }
+
+  /**
+   * On Processing Event Triiger
+   * @param eventFunction
+   */
+  onProcessing(eventFunction) {
+    this.events.onRender = eventFunction;
+  }
+
+  /**
+   * Get the current transaction status
+   * @returns {string}
+   */
+  getStatus() {
+    return this.status;
   }
 
   /**
