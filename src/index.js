@@ -78,29 +78,30 @@ class PaymentsSDK {
 
     eventer(messageEvent, (e) => {
       try {
+        const iframeElement = document.getElementById(classConstruct.iframeID);
         const json = JSON.parse(e.data);
 
-        if (typeof json.status !== 'undefined') {
-          if (json.stage === RENDERED && this.status !== RENDERED) {
+        if (typeof json.stage !== 'undefined' && iframeElement !== null) {
+          if (json.stage === RENDERED && classConstruct.status !== RENDERED) {
             this.events.onRender();
           }
 
-          if (json.status === SUCCESS && this.status !== SUCCESS) {
+          if (json.stage === SUCCESS && classConstruct.status !== SUCCESS) {
             this.events.onSuccess();
           }
 
-          if (json.status === PROCESSING && this.status !== PROCESSING) {
+          if (json.stage === PROCESSING && classConstruct.status !== PROCESSING) {
             this.events.onProcessing();
           }
 
-          if (json.status === DECLINED && this.status !== DECLINED) {
+          if (json.stage === DECLINED && classConstruct.status !== DECLINED) {
             this.events.onDecline();
           }
 
-          this.status = json.status;
+          classConstruct.setStatus(json.stage);
         }
 
-        if (typeof json.iframe_height !== 'undefined') {
+        if (typeof json.iframe_height !== 'undefined' && iframeElement !== null) {
           document.getElementById(classConstruct.iframeID).style.height = `${json.iframe_height}px`;
         }
         // eslint-disable-next-line no-empty
@@ -182,6 +183,14 @@ class PaymentsSDK {
    */
   getStatus() {
     return this.status;
+  }
+
+  /**
+   * Set the current transaction status
+   * @param status
+   */
+  setStatus(status) {
+    this.status = status;
   }
 
   /**
