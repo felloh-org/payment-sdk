@@ -3,7 +3,6 @@ import {
   PRODUCTION_ENV,
   SANDBOX_ENV,
 } from './const/environment';
-
 import {
   DECLINED,
   PRELOAD,
