@@ -1,3 +1,17 @@
+import {
+  DEV_ENV,
+  PRODUCTION_ENV,
+  SANDBOX_ENV,
+} from './const/environment';
+
+import {
+  DECLINED,
+  PRELOAD,
+  PROCESSING,
+  RENDERED,
+  SUCCESS,
+} from './const/progress';
+
 /**
  * PaymentSDK Class
  */
@@ -12,6 +26,7 @@ class PaymentsSDK {
     containerName = null,
     publicKey = null,
     options = {
+      dev: false,
       sandbox: false,
     },
   ) {
@@ -34,13 +49,13 @@ class PaymentsSDK {
     }
 
     // Set the base url for the pay frontend
-    this.baseURL = options.sandbox === true ? 'https://pay.sandbox.felloh.com/embed/' : 'https://pay.felloh.com/embed/';
+    this.setEnvironment(options);
 
     // Define a unique ID for the Iframe
     this.iframeID = `iframe-${new Date().getTime()}`;
 
     // Define the current form status
-    this.status = 'preload';
+    this.status = PRELOAD;
 
     // Define base events
     this.events = {
@@ -67,19 +82,19 @@ class PaymentsSDK {
         const json = JSON.parse(e.data);
 
         if (typeof json.status !== 'undefined') {
-          if (json.stage === 'rendered' && this.status !== 'rendered') {
+          if (json.stage === RENDERED && this.status !== RENDERED) {
             this.events.onRender();
           }
 
-          if (json.status === 'success' && this.status !== 'success') {
+          if (json.status === SUCCESS && this.status !== SUCCESS) {
             this.events.onSuccess();
           }
 
-          if (json.status === 'processing' && this.status !== 'processing') {
+          if (json.status === PROCESSING && this.status !== PROCESSING) {
             this.events.onProcessing();
           }
 
-          if (json.status === 'declined' && this.status !== 'declined') {
+          if (json.status === DECLINED && this.status !== DECLINED) {
             this.events.onDecline();
           }
 
@@ -94,6 +109,20 @@ class PaymentsSDK {
     }, false);
 
     return this;
+  }
+
+  /**
+   * Set the environment / base url
+   * @param options
+   */
+  setEnvironment(options) {
+    if (options.dev === true) {
+      this.baseURL = DEV_ENV;
+    } else if (options.sandbox === true) {
+      this.baseURL = SANDBOX_ENV;
+    } else {
+      this.baseURL = PRODUCTION_ENV;
+    }
   }
 
   /**
@@ -157,6 +186,20 @@ class PaymentsSDK {
   }
 
   /**
+   * Refresh trigger for iFrame
+   * @param paymentID
+   */
+  linkRefreshTrigger(paymentID) {
+    setInterval(() => {
+      const iframeElement = document.getElementById(this.iframeID);
+
+      if (iframeElement !== null && (this.status === PRELOAD || this.status === RENDERED)) {
+        this.renderIframe(paymentID);
+      }
+    }, 15 * 60 * 1000);
+  }
+
+  /**
    * Render the payment session
    * @param paymentID
    * @returns {PaymentsSDK}
@@ -165,6 +208,8 @@ class PaymentsSDK {
     if (this.targetElement !== null) {
       this.renderIframe(paymentID);
     }
+
+    this.linkRefreshTrigger(paymentID);
 
     return this;
   }
