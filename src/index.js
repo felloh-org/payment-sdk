@@ -135,6 +135,11 @@ class PaymentsSDK {
     iframe.setAttribute('src', `${this.baseURL}${paymentID}`);
     iframe.style.width = '100%';
     iframe.style.height = '500px';
+    iframe.sandbox.add('allow-scripts');
+    iframe.sandbox.add('allow-same-origin');
+    iframe.sandbox.add('allow-pointer-lock');
+    iframe.sandbox.add('allow-popups');
+    iframe.sandbox.add('allow-forms');
     iframe.id = this.iframeID;
 
     this.targetElement.innerHTML = '';
