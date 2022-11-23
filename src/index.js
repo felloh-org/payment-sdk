@@ -2,6 +2,7 @@ import {
   DEV_ENV,
   PRODUCTION_ENV,
   SANDBOX_ENV,
+  STAGING_ENV,
 } from './const/environment';
 import {
   DECLINED,
@@ -81,6 +82,10 @@ class PaymentsSDK {
         const iframeElement = document.getElementById(classConstruct.iframeID);
         const json = JSON.parse(e.data);
 
+        if (typeof json.iframeRedirect !== 'undefined') {
+          iframeElement.setAttribute('src', json.iframeRedirect);
+        }
+
         if (typeof json.stage !== 'undefined' && iframeElement !== null) {
           if (json.stage === RENDERED && classConstruct.status !== RENDERED) {
             this.events.onRender();
@@ -118,6 +123,8 @@ class PaymentsSDK {
   setEnvironment(options) {
     if (options.dev === true) {
       this.baseURL = DEV_ENV;
+    } else if (options.staging === true) {
+      this.baseURL = STAGING_ENV;
     } else if (options.sandbox === true) {
       this.baseURL = SANDBOX_ENV;
     } else {
@@ -159,7 +166,7 @@ class PaymentsSDK {
    * @param eventFunction
    */
   onSuccess(eventFunction) {
-    this.events.onRender = eventFunction;
+    this.events.onSuccess = eventFunction;
   }
 
   /**
@@ -167,7 +174,7 @@ class PaymentsSDK {
    * @param eventFunction
    */
   onDecline(eventFunction) {
-    this.events.onRender = eventFunction;
+    this.events.onDecline = eventFunction;
   }
 
   /**
@@ -175,7 +182,7 @@ class PaymentsSDK {
    * @param eventFunction
    */
   onProcessing(eventFunction) {
-    this.events.onRender = eventFunction;
+    this.events.onProcessing = eventFunction;
   }
 
   /**
