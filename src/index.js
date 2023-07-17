@@ -28,6 +28,7 @@ class PaymentsSDK {
     options = {
       dev: false,
       sandbox: false,
+      moto: false,
     },
   ) {
     // Set the public key
@@ -56,6 +57,9 @@ class PaymentsSDK {
 
     // Define the current form status
     this.status = PRELOAD;
+
+    // Set moto status
+    this.moto = options.moto === true;
 
     // Define base events
     this.events = {
@@ -138,8 +142,14 @@ class PaymentsSDK {
    * @returns {PaymentsSDK}
    */
   renderIframe(paymentID) {
+    let url = `${this.baseURL}${paymentID}`;
+
+    if (this.moto === true) {
+      url += '?method=MOTO_IN_PERSON';
+    }
+
     const iframe = document.createElement('iframe');
-    iframe.setAttribute('src', `${this.baseURL}${paymentID}`);
+    iframe.setAttribute('src', url);
     iframe.style.width = '100%';
     iframe.style.height = '500px';
     iframe.sandbox = 'allow-forms allow-popups allow-pointer-lock allow-same-origin allow-scripts';
