@@ -152,8 +152,8 @@ class PaymentsSDK {
     iframe.setAttribute('src', url);
     iframe.style.width = '100%';
     iframe.style.height = '500px';
-    iframe.sandbox = 'allow-forms allow-popups allow-pointer-lock allow-same-origin allow-scripts';
     iframe.id = this.iframeID;
+    iframe.name = 'felloh-payment-sdk';
 
     this.targetElement.innerHTML = '';
     this.targetElement.appendChild(iframe);
