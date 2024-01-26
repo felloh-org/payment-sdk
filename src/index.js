@@ -11,6 +11,7 @@ import {
   RENDERED,
   SUCCESS,
 } from './const/progress';
+import isUUID from './util/is-uuid';
 
 /**
  * PaymentSDK Class
@@ -231,6 +232,10 @@ class PaymentsSDK {
    * @returns {PaymentsSDK}
    */
   render(paymentID) {
+    if (isUUID(paymentID) === false) {
+      throw new Error('Felloh SDK - The provided ecommerce ID is not valid');
+    }
+
     if (this.targetElement !== null) {
       this.renderIframe(paymentID);
     }
