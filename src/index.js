@@ -62,6 +62,12 @@ class PaymentsSDK {
     // Set moto status
     this.moto = options.moto === true;
 
+    this.transactionData = {
+      transaction: {
+        id: null,
+      },
+    };
+
     // Define base events
     this.events = {
       onRender: () => {},
@@ -91,21 +97,25 @@ class PaymentsSDK {
           iframeElement.setAttribute('src', json.iframeRedirect);
         }
 
+        if (typeof json.transactionID !== 'undefined' && iframeElement !== null) {
+          this.transactionData.transaction.id = json.transactionID;
+        }
+
         if (typeof json.stage !== 'undefined' && iframeElement !== null) {
           if (json.stage === RENDERED && classConstruct.status !== RENDERED) {
             this.events.onRender();
           }
 
           if (json.stage === SUCCESS && classConstruct.status !== SUCCESS) {
-            this.events.onSuccess();
+            this.events.onSuccess(this.transactionData);
           }
 
           if (json.stage === PROCESSING && classConstruct.status !== PROCESSING) {
-            this.events.onProcessing();
+            this.events.onProcessing(this.transactionData);
           }
 
           if (json.stage === DECLINED && classConstruct.status !== DECLINED) {
-            this.events.onDecline();
+            this.events.onDecline(this.transactionData);
           }
 
           classConstruct.setStatus(json.stage);
