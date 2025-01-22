@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "yarn clean && yarn rollup -c",
-    "start": "npx babel src --watch --out-dir dist",
+    "start": "yarn clean && yarn rollup -c --watch",
     "lint": "./node_modules/.bin/eslint ./src"
   },
   "repository": {

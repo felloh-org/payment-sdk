@@ -30,6 +30,10 @@ class PaymentsSDK {
       dev: false,
       sandbox: false,
       moto: false,
+      design: {
+        pay_button: true,
+        store_card: true,
+      },
     },
   ) {
     // Set the public key
@@ -53,8 +57,15 @@ class PaymentsSDK {
     // Set the base url for the pay frontend
     this.setEnvironment(options);
 
+    // Set the design options
+    this.design = {
+      pay_button: typeof options?.design?.pay_button === 'boolean' ? options?.design?.pay_button : true,
+      store_card: typeof options?.design?.store_card === 'boolean' ? options?.design?.store_card : true,
+    };
+
     // Define a unique ID for the Iframe
     this.iframeID = `iframe-${new Date().getTime()}`;
+    this.iframe = null;
 
     // Define the current form status
     this.status = PRELOAD;
@@ -159,12 +170,21 @@ class PaymentsSDK {
       url += '?method=MOTO_IN_PERSON';
     }
 
+    if (this.design.pay_button === false) {
+      url += `${url.includes('?') ? '&' : '?'}hpb=1`;
+    }
+
+    if (this.design.store_card === false) {
+      url += `${url.includes('?') ? '&' : '?'}hsc=1`;
+    }
+
     const iframe = document.createElement('iframe');
     iframe.setAttribute('src', url);
     iframe.style.width = '100%';
     iframe.style.height = '500px';
     iframe.id = this.iframeID;
     iframe.name = 'felloh-payment-sdk';
+    this.iframe = iframe;
 
     this.targetElement.innerHTML = '';
     this.targetElement.appendChild(iframe);
@@ -172,6 +192,15 @@ class PaymentsSDK {
     this.addIFrameSizeListener();
 
     return this;
+  }
+
+  pay() {
+    if (this.iframe.contentWindow) {
+      this.iframe.contentWindow.postMessage(
+        { type: 'INITIATE_PAY', payload: this.publicKey },
+        '*',
+      );
+    }
   }
 
   /**
