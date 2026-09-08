@@ -180,6 +180,9 @@ class PaymentsSDK {
 
     const iframe = document.createElement('iframe');
     iframe.setAttribute('src', url);
+    // Safari only exposes Apple Pay to cross-origin iframes that are
+    // explicitly delegated the payment permission by their parent.
+    iframe.setAttribute('allow', 'payment');
     iframe.style.width = '100%';
     iframe.style.height = '500px';
     iframe.id = this.iframeID;
