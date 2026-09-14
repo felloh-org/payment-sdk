@@ -26,7 +26,7 @@
     "@felloh-org/eslint-config": "^1.0.2",
     "@rollup/plugin-babel": "^7.0.0",
     "@rollup/plugin-node-resolve": "^14.1.0",
-    "@rollup/plugin-replace": "^4.0.0",
+    "@rollup/plugin-replace": "^6.0.3",
     "@rollup/plugin-terser": "^1.0.0",
     "eslint": "^8.24.0",
     "eslint-plugin-sonarjs": "^0.15.0",
