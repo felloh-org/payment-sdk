@@ -33,6 +33,7 @@ class PaymentsSDK {
       design: {
         pay_button: true,
         store_card: true,
+        open_banking: true,
       },
     },
   ) {
@@ -61,6 +62,7 @@ class PaymentsSDK {
     this.design = {
       pay_button: typeof options?.design?.pay_button === 'boolean' ? options?.design?.pay_button : true,
       store_card: typeof options?.design?.store_card === 'boolean' ? options?.design?.store_card : true,
+      open_banking: typeof options?.design?.open_banking === 'boolean' ? options?.design?.open_banking : true,
     };
 
     // Define a unique ID for the Iframe
@@ -106,6 +108,13 @@ class PaymentsSDK {
 
         if (typeof json.iframeRedirect !== 'undefined') {
           iframeElement.setAttribute('src', json.iframeRedirect);
+        }
+
+        // Open banking sends the customer to their bank, which cannot render
+        // inside the iframe. The form opens the bank in a new tab; when that
+        // is blocked it asks us to navigate the merchant page instead.
+        if (typeof json.topLevelRedirect !== 'undefined') {
+          window.location.href = json.topLevelRedirect;
         }
 
         if (typeof json.transactionID !== 'undefined' && iframeElement !== null) {
@@ -176,6 +185,13 @@ class PaymentsSDK {
 
     if (this.design.store_card === false) {
       url += `${url.includes('?') ? '&' : '?'}hsc=1`;
+    }
+
+    // Opt the payment form into open banking. The form only offers it when
+    // the payment was created with open banking enabled and the
+    // organisation has an open banking provider configured.
+    if (this.design.open_banking === true) {
+      url += `${url.includes('?') ? '&' : '?'}ob=1`;
     }
 
     const iframe = document.createElement('iframe');

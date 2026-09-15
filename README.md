@@ -90,6 +90,7 @@ new FellohPayments(containerID, publicKey, options?)
 | `moto` | `boolean` | `false` | Enable Mail Order / Telephone Order mode. |
 | `design.pay_button` | `boolean` | `true` | Show the built-in pay button. Set to `false` to trigger payment manually with `pay()`. |
 | `design.store_card` | `boolean` | `true` | Show the option for customers to store their card. |
+| `design.open_banking` | `boolean` | `true` | Offer open banking alongside card payment when the payment was created with `open_banking_enabled` and your organisation has an open banking provider. The bank authorisation opens in a new tab; the embedded block tracks the payment and fires `onProcessing` / `onSuccess` / `onDecline` as normal. |
 
 ```javascript
 const felloh = new SDK('payment-iframe', 'YOUR_PUBLIC_KEY', {
